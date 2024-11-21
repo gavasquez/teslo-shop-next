@@ -12,15 +12,13 @@ const productsInCart = [
 ];
 
 interface Props {
-  params: {
-    id: string;
-  };
+  params: Promise<{ id: string }>;
 }
 
 
-export default function OrderByIdPage( { params }: Props ) {
+export default async function OrderByIdPage( { params }: Props ) {
 
-  const { id } = params;
+  const { id } = await params;
 
   // Todo: Verificación
 
