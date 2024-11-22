@@ -1,6 +1,9 @@
+export const revalidate = 604800; // 7 dias
+
+import { getProdcutBySlug } from '@/actions';
 import { ProductMobileSlideShow, ProductSlideShow, QuantitySelector, SizeSelector } from '@/components';
 import { titleFont } from '@/config/font';
-import { initialData } from '@/seed/seed';
+/* import { initialData } from '@/seed/seed'; */
 import { notFound } from 'next/navigation';
 
 interface Props {
@@ -11,7 +14,9 @@ export default async function ProductPage( { params }: Props ) {
 
   const { slug } =await params;
 
-  const product = initialData.products.find( ( product ) => product.slug === slug );
+  const product = await getProdcutBySlug(slug);
+
+  console.log({product});
 
   if ( !product ) {
     notFound();
