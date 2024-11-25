@@ -4,7 +4,10 @@ import { inter } from '../config/font';
 
 
 export const metadata: Metadata = {
-  title: "Teslo | Shop",
+  title: {
+    template: '%s - Teslo | Shop',
+    default: 'Home - Teslo | Shop',
+  },
   description: "Una tienda virtual de Productos",
 };
 
