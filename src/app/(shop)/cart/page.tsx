@@ -1,8 +1,10 @@
+'use client';
 import { QuantitySelector, Title } from '@/components';
 import { initialData } from '@/seed/seed';
 import Image from 'next/image';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
+import { useState } from 'react';
 
 
 const productsInCart = [
@@ -13,6 +15,9 @@ const productsInCart = [
 
 
 export default function CartPage() {
+
+  const [ quantity, setQuantity ] = useState<number>( 5 );
+
 
   /* redirect('/empty'); */
 
@@ -35,7 +40,7 @@ export default function CartPage() {
                   <div>
                     <p>{ product.title }</p>
                     <p>${ product.price }</p>
-                    <QuantitySelector quantity={ 3 } />
+                    <QuantitySelector quantity={ quantity } onQuantityChanged={ setQuantity } />
                     <button className="underline mt-3">
                       Remover
                     </button>
