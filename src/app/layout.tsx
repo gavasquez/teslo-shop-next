@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { inter } from '../config/font';
+import { Provider } from '@/components';
 
 
 export const metadata: Metadata = {
@@ -11,17 +12,19 @@ export const metadata: Metadata = {
   description: "Una tienda virtual de Productos",
 };
 
-export default function RootLayout({
+export default function RootLayout( {
   children,
 }: Readonly<{
   children: React.ReactNode;
-}>) {
+}> ) {
   return (
     <html lang="en">
       <body
-        className={`${inter.className} antialiased`}
+        className={ `${ inter.className } antialiased` }
       >
-        {children}
+        <Provider>
+          { children }
+        </Provider>
       </body>
     </html>
   );
