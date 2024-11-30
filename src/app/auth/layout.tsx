@@ -9,6 +9,7 @@ export default async function ShopLayout( {
 
   const session = await auth();
   
+  // Si tengo una sesión, redirijo a la página principal
   if(session?.user) {
     redirect('/');
   }

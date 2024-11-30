@@ -3,13 +3,13 @@
 import { authenticate } from '@/actions';
 import clsx from 'clsx';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+/* import { useRouter } from 'next/navigation'; */
 import { useActionState, useEffect } from 'react';
 import { IoInformationOutline } from 'react-icons/io5';
 
 export const LoginForm = () => {
 
-  const router = useRouter();
+ /*  const router = useRouter(); */
 
   const [ errorMessage, formAction, isPending ] = useActionState(
     authenticate,
@@ -20,7 +20,8 @@ export const LoginForm = () => {
   useEffect(() => {
 
     if(errorMessage === 'Success') {
-       router.replace('/');
+       /* router.replace('/'); */
+       window.location.replace('/'); // Hace el refresh de la pagina
     }
     
   }, [ errorMessage ]);
