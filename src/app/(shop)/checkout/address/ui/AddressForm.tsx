@@ -1,8 +1,12 @@
 'use client';
 
-import { Country } from '@/interfaces';
+import { deleteUserAddress, setUserAddress } from '@/actions';
+import type { Address, Country } from '@/interfaces';
+import { useAddressStore } from '@/store';
 import clsx from 'clsx';
-import { useState } from 'react';
+import { useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 
 interface FormInputs {
@@ -19,25 +23,49 @@ interface FormInputs {
 
 interface Props {
   countries: Country[];
+  userStoredAddress?: Partial<Address>;
 }
 
-export const AddressForm = ( { countries }: Props ) => {
+export const AddressForm = ( { countries, userStoredAddress = {} }: Props ) => {
 
-  const [ checkout, setCheckout ] = useState<boolean>( false );
-
-  const { register, handleSubmit, formState: { isValid } } = useForm<FormInputs>( {
+  const router = useRouter();
+  const { register, handleSubmit, formState: { isValid }, reset } = useForm<FormInputs>( {
     defaultValues: {
       // Todo: leer de la base de datos
+      ...( userStoredAddress as any ),
+      rememberAddress: false
     }
   } );
 
-  const onSubmit = handleSubmit( ( data ) => {
-    console.log( data );
+  const { data: session } = useSession( {
+    required: true,
   } );
+
+  const setAddress = useAddressStore( state => state.setAddress );
+  const address = useAddressStore( state => state.address );
+
+
+  useEffect( () => {
+    if ( address.firstName ) {
+      reset( address );
+    }
+  }, [] );
+
+
+  const onSubmit = async ( data: FormInputs ) => {
+    setAddress( data );
+    const { rememberAddress, ...restAddres } = data;
+    if ( data.rememberAddress ) {
+      await setUserAddress( restAddres, session!.user.id );
+    } else {
+      await deleteUserAddress( session!.user.id );
+    }
+    router.push( '/checkout' );
+  };
 
 
   return (
-    <form onSubmit={ onSubmit } className="grid grid-cols-1 gap-2 sm:gap-5 sm:grid-cols-2">
+    <form onSubmit={ handleSubmit( onSubmit ) } className="grid grid-cols-1 gap-2 sm:gap-5 sm:grid-cols-2">
 
       <div className="flex flex-col mb-2">
         <span>Nombres</span>

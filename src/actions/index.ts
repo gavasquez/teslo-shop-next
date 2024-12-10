@@ -4,3 +4,6 @@ export * from './product/get-stock-by-slug';
 export * from './auth/login';
 export * from './auth/logout';
 export * from './country/get-country';
+export * from './address/set-user-address';
+export * from './address/delete-user-address';
+export * from './address/get-user-address';
